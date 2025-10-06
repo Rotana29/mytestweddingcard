@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wedding Invitation</title>
+  <style>
+    :root {
+      --accent: #b85c7a;
+      --muted: #6b6b6b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: #111;
+      background: url("image/bg_frame.jpg") no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+    /*
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(3px);
+      z-index: 0;
+    }
+    */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: auto;
+      /*padding: 10px;*/
+      justify-content: center;
+      background: url("image/bg_frame.jpg") no-repeat center center fixed;
+      
+    }
+    .card {
+      /*background: #fff;*/
+      border-radius: 16px;
+      padding: 20px;
+      /*box-shadow: 0 6px 20px rgba(16,24,40,0.15);*/
+      text-align: center;
+      position: absolute;
+      
+      /*background: rgba(255, 255, 255, 0.8);*/
+      backdrop-filter: blur(1px);
+      z-index: 0;
+    }
+    h1 {
+      margin: 0;
+      font-family: 'AKbalthom_Moul_1';
+      font-size: 2rem;
+      color: var(--accent);
+      font-weight: normal;
+    }
+    h2 {
+      font-family: 'AKbalthom_Moul_1';
+      font-size: 20px;
+      margin: 20px 0 10px;
+      color: var(--accent);
+      font-weight: normal;
+    }
+    p{
+      font-family: KantumruyPro;
+      font-size: 16px;
+    }
+    a{
+      font-family: KantumruyPro;
+      
+    }
+    .divider {
+      margin: 20px auto;
+      width: 80px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .couple {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .person { text-align: center; }
+    .person img {
+      max-width: 200px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.5s;
+    }
+    .person img:hover { transform: scale(1.05); }
+    .person .name {
+      font-family: 'AKbalthom_Moul_1', serif;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .message {
+      margin: 20px 0;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #333;
+      font-family: KantumruyPro;
+    }
+    .details { margin: 6px 0; color: var(--muted); font-family: KantumruyPro; }
+    .album {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .album img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .map { margin-top: 24px; }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: 0;
+      border-radius: 12px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .image-container img:hover {
+            zoom: 1.2;
+        }
+
+    /*Fonts*/
+    @font-face {
+      font-family: KhmerBanteaySrey;
+      src: url(fonts/KhmerBanteaySrey.ttf);
+    }
+    @font-face {
+      font-family: KhmerOsMuol;
+      src: url(fonts/KhmerOSmuol.ttf);
+    }
+    @font-face {
+      font-family: KantumruyPro;
+      src: url(fonts/KantumruyPro-VariableFont_wght.ttf);
+    }
+    @font-face {
+      font-family: AKbalthom_Moul_1;
+      src: url(fonts/AKbalthom_Moul_1.ttf);
+    }
+    @font-face {
+      font-family: Atita-Bold;
+      src: url(fonts/Atita-Bold.ttf);
+    }
+
+    /* Style for the thumbnail */
+.thumbnail-img {
+  cursor: pointer;
+  width: 300px;
+  height: auto;
+}
+
+/* Overlay for full screen */
+#fullpage-overlay {
+  display: none; /* Hide initially */
+  position: fixed; /* Stay in place */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width viewport */
+  height: 100vh; /* Full height viewport */
+  background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+  z-index: 9999; /* Sit on top of everything */
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Full screen image styling */
+#full-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Contain the image within the container, preserving its aspect ratio */
+}
+
+
+    /* Animation Styles */
+    .animate { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
+    .animate.show { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.6rem; }
+      .person img { max-width: 140px; }
+      .message { font-size: 1rem; }
+      .album img { height: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1 class="animate">សិរីមង្គលអាពាហ៍ពិពាហ៍</h1>
+      <div class="divider animate"></div>
+
+      <div class="couple animate">
+        <div class="person">
+          <img src="image/IMG_9013.jpg" alt="Bride">
+          <div class="name"><p>កូនប្រុសនាម</p>សំអុន រតនា</div>
+        </div>
+        <div class="person">
+          <img src="image/IMG_9013.jpg" alt="Groom">
+          <div class="name"><p>កូនស្រីនាម</p>វ៉ាន់ សុជាតិ</div>
+        </div>
+      </div>
+
+      <div class="message animate">
+        <h2>សូមគោរពអញ្ជើញ</h2>
+        ឯកឧត្តម លោកជំទាវ លោកឧកញ៉ា លោក លោកស្រី អ្នកនាង កញ្ញា និងប្រិយមិត្តទាំងអស់គ្នា អញ្ជើញចូលរួមជាភ្ញៀវកិត្តយសក្នុងពិធីមង្គលការរបស់យើងខ្ញុំ។
+        <br>សូមអរគុណ! 
+      </div>
+      <div class="details animate"><strong>កាលបរិច្ឆេទ<br></strong><a href="https://calendar.app.google/kbT9HWRK4fniqHsn9">ថ្ងៃសៅរ៍ ១៣ កើត ខែមាឃ ឆ្នាំម្សាញ់ សប្តស័ក ព.ស.២៥៦៩ <br>ត្រូវនឹងថ្ងៃទី៣១ ខែមករា ឆ្នាំ២០២៦<br>Saturday, Janaury 31, 2026</a></div>
+      <div class="details animate">វេលាម៉ោង ៥:០០ ល្ងាច</div>
+      <h2 class="animate" style="margin-top:30px"​​​>ទីតាំងរៀបចំកម្មវិធី</h2>
+
+         <a href="https://maps.app.goo.gl/xW4biQYC12UkuPYc8"><img src="image/icon/map.png" alt="W3Schools.com" class="center zoom" width="60" height="60" ></a>
+
+        <a href="https://maps.app.goo.gl/xW4biQYC12UkuPYc8">នៅគេហដ្ឋានខាស្រី <br>ភូមិតាលុស ឃុំបុសលាវ ស្រុកចិត្របុរី ខេត្តក្រចេះ</a>
+    
+      <div class="map animate">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d320.7847902310639!2d106.03233692210806!3d12.4298008866122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2skh!4v1759393493737!5m2!1sen!2skh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="divider animate">
+        
+      </div>
+
+      <h2 class="animate">វិចិត្រសាល</h2>
+      <div class="album">
+        <img class="animate" src="image/IMG_01.jpg" alt="Album Photo 1" onclick="requestFullscreenForImage(this)">
+        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+2" alt="Album Photo 2">
+        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 3">
+        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+4" alt="Album Photo 4">
+        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+5" alt="Album Photo 5">
+        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+6" alt="Album Photo 6">
+      </div>
+
+      
+
+      <div class="divider animate"></div>
+      <div class="footer animate">Please RSVP by December 1, 2025 | Contact: rsvp@example.com</div>
+    </div>
+  </div>
+
+  <script>
+    // Scroll Animation
+    const observers = document.querySelectorAll('.animate');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.addEventListener('DOMContentLoaded', () => {
+  const thumbnails = document.querySelectorAll('.thumbnail-img');
+  const fullpageOverlay = document.getElementById('fullpage-overlay');
+  const fullImage = document.getElementById('full-img');
+
+  // Show full-screen image on thumbnail click
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', () => {
+      fullImage.src = thumbnail.src; // Set the full-screen image source
+      fullpageOverlay.style.display = 'block'; // Show the overlay
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    });
+  });
+
+  // Hide full-screen image on overlay click
+  fullpageOverlay.addEventListener('click', () => {
+    fullpageOverlay.style.display = 'none'; // Hide the overlay
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+  });
+});
+
+    observers.forEach(el => observer.observe(el));
+  function requestFullscreenForImage(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) { /* Safari */
+    element.webkitRequestFullscreen();
+  } else if (element.msRequestFullscreen) { /* IE11 */
+    element.msRequestFullscreen();
+  }
+}
+
+  </script>
+</body>
+</html>
