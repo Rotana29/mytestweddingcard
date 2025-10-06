@@ -160,51 +160,72 @@
       font-family: Atita-Bold;
       src: url(fonts/Atita-Bold.ttf);
     }
+/*Image Albums*/
+    .album {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
 
-    /* Style for the thumbnail */
-.thumbnail-img {
-  cursor: pointer;
-  width: 300px;
-  height: auto;
-}
+  .album img {
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
 
-/* Overlay for full screen */
-#fullpage-overlay {
-  display: none; /* Hide initially */
-  position: fixed; /* Stay in place */
-  top: 0;
-  left: 0;
-  width: 100vw; /* Full width viewport */
-  height: 100vh; /* Full height viewport */
-  background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
-  z-index: 9999; /* Sit on top of everything */
-  overflow: hidden;
-  text-align: center;
-}
+  .album img:hover {
+    transform: scale(1.05);
+  }
 
-/* Full screen image styling */
-#full-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Contain the image within the container, preserving its aspect ratio */
-}
+  .animate {
+    animation: fadeIn 0.6s ease-in-out;
+  }
 
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
-    /* Animation Styles */
-    .animate { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
-    .animate.show { opacity: 1; transform: translateY(0); }
+  .fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      h1 { font-size: 1.6rem; }
-      .person img { max-width: 140px; }
-      .message { font-size: 1rem; }
-      .album img { height: 120px; }
-    }
+  .fullscreen-overlay img {
+    max-width: 95%;
+    max-height: 95%;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+  }
+
+  .close-btn, .prev-btn, .next-btn {
+    position: absolute;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    user-select: none;
+    background: rgba(0,0,0,0.5);
+    transition: background 0.3s ease;
+  }
+
+  .close-btn:hover, .prev-btn:hover, .next-btn:hover {
+    background: rgba(255,0,0,0.7);
+  }
+
+  .close-btn { top: 20px; right: 30px; }
+  .prev-btn { left: 20px; top: 50%; transform: translateY(-50%); }
+  .next-btn { right: 20px; top: 50%; transform: translateY(-50%); }
   </style>
 </head>
 <body>
@@ -246,15 +267,13 @@
 
       <h2 class="animate">វិចិត្រសាល</h2>
       <div class="album">
-        <img class="animate" src="image/IMG_01.jpg" alt="Album Photo 1" onclick="requestFullscreenForImage(this)">
-        <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+2" alt="Album Photo 2">
+        <img class="animate" src="image/IMG_01.jpg" alt="Album Photo 1">
+        <img class="animate" src="image/IMG_9022.jpg" alt="Album Photo 2">
         <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 3">
         <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+4" alt="Album Photo 4">
         <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+5" alt="Album Photo 5">
         <img class="animate" src="https://via.placeholder.com/400x300.png?text=Photo+6" alt="Album Photo 6">
       </div>
-
-      
 
       <div class="divider animate"></div>
       <div class="footer animate">Please RSVP by December 1, 2025 | Contact: rsvp@example.com</div>
@@ -304,6 +323,67 @@
   }
 }
 
+const images = document.querySelectorAll('.album img');
+let currentIndex = 0;
+let fullscreenDiv, fullscreenImg;
+
+images.forEach((img, index) => {
+  img.addEventListener('click', () => openFullscreen(index));
+});
+
+function openFullscreen(index) {
+  currentIndex = index;
+
+  // Create overlay
+  fullscreenDiv = document.createElement('div');
+  fullscreenDiv.className = 'fullscreen-overlay';
+
+  // Fullscreen image
+  fullscreenImg = document.createElement('img');
+  fullscreenImg.src = images[currentIndex].src;
+  fullscreenDiv.appendChild(fullscreenImg);
+
+  // Close button
+  const closeBtn = document.createElement('span');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.className = 'close-btn';
+  closeBtn.onclick = () => document.body.removeChild(fullscreenDiv);
+  fullscreenDiv.appendChild(closeBtn);
+
+  // Prev button
+  const prevBtn = document.createElement('span');
+  prevBtn.innerHTML = '&#10094;'; // left arrow
+  prevBtn.className = 'prev-btn';
+  prevBtn.onclick = (e) => {
+    e.stopPropagation();
+    showPrev();
+  };
+  fullscreenDiv.appendChild(prevBtn);
+
+  // Next button
+  const nextBtn = document.createElement('span');
+  nextBtn.innerHTML = '&#10095;'; // right arrow
+  nextBtn.className = 'next-btn';
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    showNext();
+  };
+  fullscreenDiv.appendChild(nextBtn);
+
+  document.body.appendChild(fullscreenDiv);
+}
+
+// Show previous image
+function showPrev() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  fullscreenImg.src = images[currentIndex].src;
+}
+
+// Show next image
+function showNext() {
+  currentIndex = (currentIndex + 1) % images.length;
+  fullscreenImg.src = images[currentIndex].src;
+}
   </script>
 </body>
 </html>
