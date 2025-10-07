@@ -1,83 +1,297 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="km">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome | Wedding Invitation</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wedding Invitation</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: url("image/Floral-frame.jpg") no-repeat center center/cover;
-      width: 100%;
-      font-family: 'Georgia', serif;
-      color: white;
-      text-align: center;
+    :root {
+      --accent: #b85c7a;
+      --muted: #6b6b6b;
     }
-    .welcome-box {
-      /*background: rgba(134, 134, 134, 0.5);*/
-      height: auto;
-      width: 95%;
+    * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+    body {
+      color: #373737;
+      background: url("image/bg_frame.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: KantumruyPro, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Floating Flower Petals */
+    .petal {
+      position: fixed;
+      top: -10vh;
+      width: 25px;
+      height: 25px;
+      background: url('image/petal.png') no-repeat center center;
+      background-size: cover;
+      opacity: 0.8;
+      animation: fall 12s linear infinite, sway 3s ease-in-out infinite alternate;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
+    }
+    @keyframes sway {
+      0% { transform: translateX(-20px); }
+      100% { transform: translateX(20px); }
+    }
+
+    /* Welcome Page */
+    #welcome-page {
+      position: fixed;
+      inset: 0;
+      background: url("image/bg_frame.jpg") no-repeat center center fixed;
+      background-size: cover;
       margin: 20px;
-      padding: 10px;
-      border-radius: 6px;
-      animation: fadeIn 2s ease-in;
-      box-shadow:0 4px 8px 0 rgba(105, 105, 105, 0.6);
-      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      text-align: center;
+      backdrop-filter: blur(3px);
+      transition: opacity 1s ease;
+      z-index: 999;
+    }
+
+    #welcome-page h1 {
+      font-family: 'AKbalthom_Moul_1';
+      color: var(--accent);
+      font-size: 2rem;
+      margin-bottom: 20px;
+      animation: titlePop 2s ease;
+    }
+
+    #welcome-page p {
+      color: #333;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      animation: fadeInUp 2s ease;
+    }
+
+    #open-btn {
+      background: var(--accent);
+      font-family: KantumruyPro;
+      color: white;
+      font-size: 1.1rem;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      animation: fadeIn 3s ease;
+    }
+
+    #open-btn:hover {
+      background: #9b4764;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes titlePop {
+      0% { opacity: 0; transform: scale(0.8); }
+      60% { opacity: 1; transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Invitation Page */
+    #invitation-page {
+      display: none;
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: auto;
+      padding-bottom: 50px;
+    }
+
+    .card {
+      height: 100%;
+      text-align: center;
+      /*ackground: rgba(255, 255, 255, 0.8);*/
+      border-radius: 8px;
+      padding: 20px;
+      backdrop-filter: blur(1px);
       
     }
+
     h1 {
-      font-size: 2.5rem;
-      font-family: KhmerOsMuol;
-      font-weight: normal;
-      margin-bottom: 20px;
+      font-family: 'AKbalthom_Moul_1';
+      font-size: auto;
+      color: var(--accent);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.8s ease;
+      
     }
-    h2{
-      font-family: AKbalthom_Moul_1;
-      font-weight: normal;
-      color: #ff9900;
-      -webkit-text-stroke: 0.2px rgb(255, 255, 255);
-      text-shadow:0 2px 2px rgba(105, 105, 105, 0.6);
-    }
-    h3{
-      font-family: KhmerOsMuol;
-      font-weight: normal;
+    h1.show { opacity: 1; transform: scale(1); }
+
+    h2 {
+      font-family: 'AKbalthom_Moul_1';
+      font-size: 20px;
+      margin: 20px 0 10px;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
     }
     p {
-      font-family:KhmerBanteaySrey ;
-      color: #000;
-      font-size: 11px;
+      font-family: KantumruyPro;
+      
     }
-    button {
-      background-color: #ea8c8c;
-      border: none;
-      padding: 10px 20px;
-      font-weight: normal;
-      border-radius: 50px;
+    h2.show { opacity: 1; transform: translateY(0); }
+
+    p, .details, .message, .album, iframe, .footer {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .show {
+      opacity: 1 !important;
+      transform: translateX(0) !important;
+    }
+
+    .divider {
+      margin: 20px auto;
+      width: 80px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .couple {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.8s ease;
+    }
+
+    .person img {
+      max-width: 150px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.8s;
+    }
+    .person img:hover { transform: scale(1.05); }
+
+    .person .name {
+      font-family: 'AKbalthom_Moul_1';
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .album {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .album img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.5s ease;
       cursor: pointer;
-      transition: 0.3s;
-      text-align: center;
-      font-family: KhmerOsMuol;
-      font-weight: normal;
-      color: white;
-      box-shadow:0 2px 4px 0 rgba(105, 105, 105, 0.6)
-    }
-    button:hover {
-      background: rgb(7, 179, 205);
-      transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
     }
 
+    .album img:hover { transform: scale(1.1); }
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(30px);}
-      to {opacity: 1; transform: translateY(0);}
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: 0;
+      border-radius: 12px;
     }
 
-    /*Fonts*/
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .map-button {
+    display: inline-flex;
+    align-items: center;
+    margin: 8px;
+    gap: 8px;
+    background-color: #2b83cb;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 4px 20px;
+    font-size: 16px;
+    font-family: KantumruyPro;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  .map-button:hover {
+    background-color: #005fa3;
+    transform: scale(1.05);
+  }
+
+  .map-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+
+    /* Fullscreen album */
+    .fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .fullscreen-overlay img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+    .close-btn, .prev-btn, .next-btn {
+      position: absolute;
+      color: rgb(255, 255, 255);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      user-select: none;
+      background: rgba(0, 0, 0, 0.5);
+      transition: background 0.2s ease;
+    }
+    .close-btn:hover, .prev-btn:hover, .next-btn:hover {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .close-btn { top: 20px; right: 30px; }
+    .prev-btn { left: 15px; top: 50%; transform: translateY(-50%); }
+    .next-btn { right: 15px; top: 50%; transform: translateY(-50%); }
+
+     /*Fonts*/
     @font-face {
       font-family: KhmerBanteaySrey;
       src: url(fonts/KhmerBanteaySrey.ttf);
@@ -87,17 +301,171 @@
       src: url(fonts/KhmerOSmuol.ttf);
     }
     @font-face {
+      font-family: KantumruyPro;
+      src: url(fonts/KantumruyPro-VariableFont_wght.ttf);
+    }
+    @font-face {
       font-family: AKbalthom_Moul_1;
       src: url(fonts/AKbalthom_Moul_1.ttf);
     }
-
+    @font-face {
+      font-family: Atita-Bold;
+      src: url(fonts/Atita-Bold.ttf);
+    }
   </style>
 </head>
 <body>
-  <div class="welcome-box"​​>
-    <h2>សូមគោរពអញ្ជើញ</h2>
-    <p>ឯកឧត្តម លោកជំទាវ លោកឧកញ៉ា <br>លោក លោកស្រី អ្នកនាងកញ្ញា និងប្រិយមិត្តទាំងអស់គ្នា ចូលរួមជាភ្ញៀវកិត្តយសក្នុងពិធីមង្គលការរបស់យើងខ្ញុំ</p>
-    <button onclick="location.href='invitation.html'">ចូលមើលធៀបការ</button>
+
+  <!-- Floating petals (generated by JS later) -->
+
+  <!-- Welcome Page -->
+  <div id="welcome-page">
+    <h1>សូមគោរពអញ្ជើញ</h1>
+    <p>ឯកឧត្តម លោកជំទាវ លោកឧកញ៉ា <br>លោក លោកស្រី អ្នកនាង កញ្ញា បងប្អូនប្រិយមិត្ត <br>ទាំងអស់គ្នា</p>
+    <button id="open-btn"><strong>ចុចបើកលិខិតអញ្ជើញ</strong></button>
   </div>
+
+  <!-- Invitation Page -->
+  <div id="invitation-page" class="container">
+    <div class="card">
+      <h1>សិរីមង្គលអាពាហ៍ពិពាហ៍</h1>
+      <div class="divider"></div>
+
+      <div class="couple">
+        <div class="person">
+          <img src="image/IMG_9013.jpg" alt="Groom">
+          <div class="name"><p>កូនប្រុសនាម</p>សំអុន រតនា</div>
+        </div>
+        <div class="person">
+          <img src="image/IMG_9013.jpg" alt="Bride">
+          <div class="name"><p>កូនស្រីនាម</p>វ៉ាន់ សុជាតិ</div>
+        </div>
+      </div>
+
+      <div class="message">
+        <h2>សូមគោរពអញ្ជើញ</h2>
+        ឯកឧត្តម លោកជំទាវ លោកឧកញ៉ា លោក លោកស្រី អ្នកនាង កញ្ញា និងប្រិយមិត្តទាំងអស់គ្នា
+        អញ្ជើញចូលរួមជាភ្ញៀវកិត្តយសក្នុងពិធីមង្គលការរបស់យើងខ្ញុំទាំងពីរ
+        <br>សូមអរគុណ! 
+      </div>
+
+      <div class="details"><h2>កាលបរិច្ឆេទ</h2>
+        ថ្ងៃសៅរ៍ ១៣ កើត ខែមាឃ ឆ្នាំម្សាញ់ សប្តស័ក ព.ស.២៥៦៩<br>
+        <strong>ត្រូវនឹងថ្ងៃទី៣១ ខែមករា ឆ្នាំ២០២៦</strong><br>
+        Saturday, January 31, 2026
+      </div>
+
+      <div class="details">វេលាម៉ោង <strong>៥:០០</strong> ល្ងាច</div>
+
+      <h2 style="margin-top:30px">ទីតាំងរៀបចំកម្មវិធី</h2>
+        <a href="https://maps.app.goo.gl/xW4biQYC12UkuPYc8">នៅគេហដ្ឋានខាស្រី <br>ភូមិតាលុស ឃុំបុសលាវ ស្រុកចិត្របុរី ខេត្តក្រចេះ</a><br>
+        <a href="https://maps.app.goo.gl/xW4biQYC12UkuPYc8" target="_blank" class="map-button">
+          <strong>ចុចចូលមើលទីតាំង</strong><img src="image/icon/map.png" width="40" height="40" alt="Map" />
+        </a>
+      </a><br>
+         <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1762.9732455899925!2d106.03233163704179!3d12.429874154220542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTLCsDI1JzQ3LjIiTiAxMDbCsDAxJzU2LjIiRQ!5e1!3m2!1sen!2skh!4v1759823035136!5m2!1sen!2skh" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="divider"></div>
+
+      <h2 class="magin: 2px;">វិចិត្រសាល</h2>
+      <div class="album">
+        <img src="image/IMG_01.jpg" alt="Album Photo 1">
+        <img src="image/IMG_9022.jpg" alt="Album Photo 2">
+        <img src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 3">
+        <img src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 4">
+        <img src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 5">
+        <img src="https://via.placeholder.com/400x300.png?text=Photo+3" alt="Album Photo 6">
+      </div>
+
+      <div class="divider"></div>
+      <div class="footer">Please RSVP by December 1, 2025 | Contact: rsvp@example.com</div>
+    </div>
+  </div>
+
+  <script>
+    // Floating petals generator
+    const numPetals = 20;
+    for (let i = 0; i < numPetals; i++) {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDelay = Math.random() * 10 + 's';
+      petal.style.animationDuration = 10 + Math.random() * 10 + 's';
+      petal.style.transform = `scale(${0.5 + Math.random() * 0.8})`;
+      document.body.appendChild(petal);
+    }
+
+    // Show invitation
+    document.getElementById('open-btn').addEventListener('click', function() {
+      const welcome = document.getElementById('welcome-page');
+      const invite = document.getElementById('invitation-page');
+      welcome.style.opacity = '0';
+      setTimeout(() => {
+        welcome.style.display = 'none';
+        invite.style.display = 'block';
+        invite.scrollIntoView({ behavior: 'smooth' });
+      }, 1000);
+    });
+
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('h1, h2, p, .details, .message, .couple, .album, iframe, .footer')
+      .forEach(el => observer.observe(el));
+
+    // Fullscreen album viewer
+    const images = document.querySelectorAll('.album img');
+    let currentIndex = 0;
+    let fullscreenDiv, fullscreenImg;
+
+    images.forEach((img, index) => {
+      img.addEventListener('click', () => openFullscreen(index));
+    });
+
+    function openFullscreen(index) {
+      currentIndex = index;
+      fullscreenDiv = document.createElement('div');
+      fullscreenDiv.className = 'fullscreen-overlay';
+      fullscreenImg = document.createElement('img');
+      fullscreenImg.src = images[currentIndex].src;
+      fullscreenDiv.appendChild(fullscreenImg);
+
+      const closeBtn = document.createElement('span');
+      closeBtn.innerHTML = '&times;';
+      closeBtn.className = 'close-btn';
+      closeBtn.onclick = () => document.body.removeChild(fullscreenDiv);
+      fullscreenDiv.appendChild(closeBtn);
+
+      const prevBtn = document.createElement('span');
+      prevBtn.innerHTML = '&#10094;';
+      prevBtn.className = 'prev-btn';
+      prevBtn.onclick = e => { e.stopPropagation(); showPrev(); };
+      fullscreenDiv.appendChild(prevBtn);
+
+      const nextBtn = document.createElement('span');
+      nextBtn.innerHTML = '&#10095;';
+      nextBtn.className = 'next-btn';
+      nextBtn.onclick = e => { e.stopPropagation(); showNext(); };
+      fullscreenDiv.appendChild(nextBtn);
+
+      document.body.appendChild(fullscreenDiv);
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      fullscreenImg.src = images[currentIndex].src;
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      fullscreenImg.src = images[currentIndex].src;
+    }
+  </script>
 </body>
 </html>
